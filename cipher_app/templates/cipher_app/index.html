@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cryptography</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #D2B48C, #EEE8CD);
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      flex-direction: column;
+    }
+
+    .glass-container {
+      width: 85%;
+      height: 85%;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    h2 {
+      font-size: 30px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    textarea,
+    input {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+    }
+
+    .cipher-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center; 
+      align-items: center; 
+      margin-bottom: 20px;
+    }
+
+    .cipher-buttons button {
+      background-color: #8B4513;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: 0.3s;
+      width: auto; 
+      text-align: center;
+    }
+
+    .cipher-buttons button:hover {
+      background-color: #A0522D;
+      transform: scale(1.05);
+    }
+
+    .result {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      text-align: left;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(210, 180, 140, 0.8);
+      color: #333;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="glass-container">
+    <div class="content">
+      <h2>Cryptography Algorithms</h2>
+
+      <!-- Cipher Buttons -->
+      <div class="cipher-buttons">
+        <button type="button" data-cipher="caesar">Caesar Cipher</button>
+        <button type="button" data-cipher="monoalphabetic">Monoalphabetic Cipher</button>
+        <button type="button" data-cipher="playfair">Playfair Cipher</button>
+        <button type="button" data-cipher="vigenere">Vigenère Cipher</button>
+        <button type="button" data-cipher="hill">Hill Cipher</button>
+        <button type="button" data-cipher="rail_fence">Rail Fence Cipher</button>
+        <button type="button" data-cipher="one_time_pad">One-Time Pad Cipher</button>
+        <button type="button" data-cipher="row_transposition">Row Transposition Cipher</button>
+        <button type="button" data-cipher="block">Block Cipher</button>
+        <button type="button" data-cipher="feistel">Feistel Cipher</button>
+        <button type="button" data-cipher="des">DES Encryption</button>
+        <button type="button" data-cipher="aes">AES Encryption</button>
+      </div>
+
+      <!-- Form -->
+      <form method="POST" id="cipherForm">
+        {% csrf_token %}
+        <label>Enter Message:</label>
+        <textarea name="message" required>{{ message }}</textarea>
+
+        <label>Enter Key (if needed):</label>
+        <input type="text" name="key" value="{{ key }}">
+
+        <input type="hidden" name="cipher" id="cipherInput">
+      </form>
+
+      <!-- Results -->
+      {% if ciphertext %}
+      <div class="result">
+        <p><strong>Cipher:</strong> {{ cipher|title }}</p>
+        <p><strong>Key:</strong> {{ used_key }}</p>
+        <p><strong>Ciphertext:</strong> {{ ciphertext }}</p>
+        <p><strong>Decrypted Text:</strong> {{ decrypted }}</p>
+      </div>
+      {% endif %}
+
+      {% if error %}
+      <div class="result" style="color: red;">
+        <p><strong>Error:</strong> {{ error }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <footer>
+    <p>Developed by: Omar &nbsp;&nbsp; Yassin &nbsp;&nbsp; Omar &nbsp;&nbsp; Romaysaa &nbsp;&nbsp; Maghfra</p>
+  </footer>
+
+  <script>
+    const buttons = document.querySelectorAll('.cipher-buttons button');
+    const cipherInput = document.getElementById('cipherInput');
+    const form = document.getElementById('cipherForm');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        cipherInput.value = button.getAttribute('data-cipher');
+        form.submit();
+      });
+    });
+  </script>
+
+</body>
+
+</html>
